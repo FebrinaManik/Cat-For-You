@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cat Story Builder</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <h1>🐾 Cat Story Builder</h1>
+    <p>Custom 2 kucing lucu, lalu jalankan ceritanya.</p>
+  </header>
+
+  <main class="app">
+    <!-- PANEL CUSTOMIZER -->
+    <aside class="panel" id="controls">
+      <h2>Customizer</h2>
+
+      <div class="tabs">
+        <button class="tab is-active" data-target="c1" type="button">Kucing 1</button>
+        <button class="tab" data-target="c2" type="button">Kucing 2</button>
+      </div>
+
+      <section class="cat-form is-active" id="form-c1" data-cat="1">
+        <label>Nama panggilan (opsional)
+          <input id="name1" type="text" placeholder="Misal: Mochi" />
+        </label>
+
+        <label>Jenis kucing
+          <select id="breed1">
+            <option value="british">British (bulat)</option>
+            <option value="siamese">Siamese (point)</option>
+            <option value="calico">Calico (belang)</option>
+            <option value="tuxedo">Tuxedo (hitam-putih)</option>
+          </select>
+        </label>
+
+        <div class="row">
+          <label>Warna bulu
+            <input id="fur1" type="color" value="#f2c28f" />
+          </label>
+
+          <label>Warna aksen (pattern)
+            <input id="accent1" type="color" value="#7a5137" />
+          </label>
+        </div>
+
+        <label>Baju
+          <select id="outfit1">
+            <option value="hoodie">Hoodie</option>
+            <option value="sweater">Sweater</option>
+            <option value="dress">Dress</option>
+            <option value="none">Tanpa baju</option>
+          </select>
+        </label>
+
+        <label>Warna baju
+          <input id="outfitColor1" type="color" value="#7ad3ff" />
+        </label>
+
+        <label>Aksesoris
+          <select id="accessory1">
+            <option value="none">Tidak ada</option>
+            <option value="bow">Pita</option>
+            <option value="hat">Topi mini</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="cat-form" id="form-c2" data-cat="2">
+        <label>Nama panggilan (opsional)
+          <input id="name2" type="text" placeholder="Misal: Boba" />
+        </label>
+
+        <label>Jenis kucing
+          <select id="breed2">
+            <option value="british">British (bulat)</option>
+            <option value="siamese">Siamese (point)</option>
+            <option value="calico" selected>Calico (belang)</option>
+            <option value="tuxedo">Tuxedo (hitam-putih)</option>
+          </select>
+        </label>
+
+        <div class="row">
+          <label>Warna bulu
+            <input id="fur2" type="color" value="#ffe2c2" />
+          </label>
+
+          <label>Warna aksen (pattern)
+            <input id="accent2" type="color" value="#b25a3c" />
+          </label>
+        </div>
+
+        <label>Baju
+          <select id="outfit2">
+            <option value="hoodie">Hoodie</option>
+            <option value="sweater" selected>Sweater</option>
+            <option value="dress">Dress</option>
+            <option value="none">Tanpa baju</option>
+          </select>
+        </label>
+
+        <label>Warna baju
+          <input id="outfitColor2" type="color" value="#ffd166" />
+        </label>
+
+        <label>Aksesoris
+          <select id="accessory2">
+            <option value="none">Tidak ada</option>
+            <option value="bow" selected>Pita</option>
+            <option value="hat">Topi mini</option>
+          </select>
+        </label>
+      </section>
+
+      <hr />
+
+      <div class="actions">
+        <button id="nextBtn" class="primary" type="button">Berikutnya ▶</button>
+        <button id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <p class="hint">Tips: klik kucingnya biar dia “meong” 😺</p>
+    </aside>
+
+    <!-- STAGE -->
+    <section class="stage">
+      <div id="scene" class="scene" aria-label="Panggung animasi dua kucing">
+        <div id="cat1Slot" class="cat-slot left" aria-label="Kucing 1"></div>
+        <div id="cat2Slot" class="cat-slot right mirror" aria-label="Kucing 2"></div>
+
+        <div id="yarnBall" class="yarn-ball hidden" aria-hidden="true"></div>
+        <div id="heartsLayer" class="hearts-layer" aria-hidden="true"></div>
+        <div id="speech" class="speech hidden" aria-hidden="true"></div>
+
+        <div class="stage-actions hidden" id="stageActions">
+          <button id="replayBtn" class="primary" type="button">Ulangi cerita</button>
+          <button id="backBtn" type="button">Balik ke customizer</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- TEMPLATE: SVG KUCING -->
+  <template id="catTemplate">
+    <svg class="cat-svg" viewBox="0 0 260 260" role="img" aria-label="Kucing 2D">
+      <g class="cat">
+        <!-- tail -->
+        <g class="tail">
+          <path class="tail-stroke" d="M190 175 C225 170, 230 205, 200 210"
+                fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+
+        <!-- body -->
+        <ellipse class="fur" cx="130" cy="175" rx="78" ry="62" />
+        <!-- belly patch (tuxedo) -->
+        <ellipse class="belly" cx="130" cy="190" rx="52" ry="42" />
+
+        <!-- paws -->
+        <ellipse class="paw fur-light" cx="95" cy="224" rx="22" ry="14" />
+        <ellipse class="paw fur-light" cx="165" cy="224" rx="22" ry="14" />
+
+        <!-- body patterns -->
+        <g class="pattern pattern-calico-body">
+          <path class="patch" d="M92 160 C70 170, 78 205, 105 195 C125 188, 118 155, 92 160 Z"/>
+          <path class="patch2" d="M168 158 C192 170, 190 202, 160 198 C142 195, 146 154, 168 158 Z"/>
+        </g>
+
+        <!-- outfits -->
+        <g class="outfit hoodie">
+          <path class="outfit-fill"
+                d="M65 175 C70 135, 190 135, 195 175
+                   C198 200, 178 225, 130 230
+                   C82 225, 62 200, 65 175 Z"/>
+          <path class="outfit-edge" d="M98 145 C110 160, 150 160, 162 145" fill="none"/>
+        </g>
+
+        <g class="outfit sweater">
+          <path class="outfit-fill"
+                d="M70 170 C80 145, 180 145, 190 170
+                   C196 190, 186 220, 130 226
+                   C74 220, 64 190, 70 170 Z"/>
+          <path class="outfit-edge" d="M85 170 L175 170" fill="none"/>
+        </g>
+
+        <g class="outfit dress">
+          <path class="outfit-fill" d="M98 150 C110 165, 150 165, 162 150 L190 230 L70 230 Z"/>
+          <path class="outfit-edge" d="M98 150 C110 165, 150 165, 162 150" fill="none"/>
+        </g>
+
+        <!-- head -->
+        <g class="head">
+          <circle class="fur" cx="130" cy="95" r="56" />
+
+          <polygon class="fur" points="90,60 110,35 120,70" />
+          <polygon class="fur" points="170,60 150,35 140,70" />
+
+          <!-- siamese points overlay -->
+          <g class="pattern pattern-siamese">
+            <polygon class="points" points="90,60 110,35 120,70"/>
+            <polygon class="points" points="170,60 150,35 140,70"/>
+            <ellipse class="points" cx="95" cy="224" rx="22" ry="14"/>
+            <ellipse class="points" cx="165" cy="224" rx="22" ry="14"/>
+          </g>
+
+          <!-- calico head patches -->
+          <g class="pattern pattern-calico">
+            <path class="patch" d="M105 82 C88 90, 96 120, 118 112 C132 106, 125 82, 105 82 Z"/>
+            <path class="patch2" d="M155 78 C172 86, 168 115, 146 112 C134 110, 136 78, 155 78 Z"/>
+            <path class="patch3" d="M124 120 C112 132, 124 150, 138 142 C152 134, 142 116, 124 120 Z"/>
+          </g>
+
+          <!-- face -->
+          <g class="face">
+            <ellipse class="eye" cx="110" cy="95" rx="9" ry="10"/>
+            <ellipse class="eye" cx="150" cy="95" rx="9" ry="10"/>
+            <circle class="spark" cx="113" cy="92" r="2.5"/>
+            <circle class="spark" cx="153" cy="92" r="2.5"/>
+
+            <path class="nose" d="M130 108 L123 116 L137 116 Z"/>
+            <path class="mouth" d="M130 116 C124 122, 118 124, 112 122" fill="none"/>
+            <path class="mouth" d="M130 116 C136 122, 142 124, 148 122" fill="none"/>
+
+            <path class="whisker" d="M92 112 L60 106" fill="none"/>
+            <path class="whisker" d="M92 120 L58 120" fill="none"/>
+            <path class="whisker" d="M92 128 L60 134" fill="none"/>
+
+            <path class="whisker" d="M168 112 L200 106" fill="none"/>
+            <path class="whisker" d="M168 120 L202 120" fill="none"/>
+            <path class="whisker" d="M168 128 L200 134" fill="none"/>
+          </g>
+
+          <!-- accessories -->
+          <g class="accessory accessory-bow">
+            <path class="acc-fill" d="M130 150 C120 142, 108 144, 104 154 C110 160, 122 160, 130 150 Z"/>
+            <path class="acc-fill" d="M130 150 C140 142, 152 144, 156 154 C150 160, 138 160, 130 150 Z"/>
+            <circle class="acc-fill" cx="130" cy="150" r="5"/>
+          </g>
+
+          <g class="accessory accessory-hat">
+            <path class="acc-fill" d="M96 48 C120 30, 140 30, 164 48 C146 54, 114 54, 96 48 Z"/>
+            <rect class="acc-fill" x="104" y="42" width="52" height="12" rx="6"/>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </template>
+
+  <!-- TEMPLATE: PROPS (keranjang, ikan, scroll) -->
+  <template id="carryTemplate">
+    <div class="carry hidden" aria-hidden="true">
+      <div class="basket" aria-hidden="true">
+        <div class="basket-handle"></div>
+        <div class="basket-weave"></div>
+      </div>
+
+      <div class="fish hidden" aria-hidden="true"></div>
+
+      <div class="scroll hidden" aria-hidden="true">
+        <div class="roll left"></div>
+        <div class="paper"><span class="scroll-text"></span></div>
+        <div class="roll right"></div>
+      </div>
+    </div>
+  </template>
+</body>
+</html>
